@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --blue-primary: #1565C0;
+    --blue-light: #1E88E5;
+    --blue-dark: #0D47A1;
+    --blue-bg: #E3F2FD;
+    --blue-accent: #42A5F5;
+    --white: #FFFFFF;
+    --gray-light: #F5F7FA;
+    --gray-mid: #B0BEC5;
+    --gray-text: #546E7A;
+    --text-dark: #1A237E;
+    --shadow: 0 4px 20px rgba(21,101,192,0.12);
+    --shadow-hover: 0 8px 32px rgba(21,101,192,0.22);
+  }
+  body { font-family: 'Cairo', sans-serif; background: var(--gray-light); color: var(--text-dark); min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    background: var(--blue-primary);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; }
+  .nav-logo-icon { width: 36px; height: 36px; background: rgba(255,255,255,0.18); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .nav-logo-icon svg { width: 22px; height: 22px; fill: white; }
+  .nav-brand { color: white; font-size: 17px; font-weight: 700; line-height: 1.2; }
+  .nav-brand span { display: block; font-size: 11px; font-weight: 400; opacity: 0.75; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    color: rgba(255,255,255,0.85);
+    background: none; border: none;
+    padding: 8px 16px; border-radius: 6px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.18); color: white; }
+
+  /* PAGES */
+  .page { display: none; animation: fadeIn 0.3s ease; }
+  .page.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-primary) 60%, var(--blue-light) 100%);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+    padding: 5px 14px; border-radius: 50px;
+    font-size: 12px; margin-bottom: 1.5rem;
+  }
+  .hero h1 { font-size: 2.2rem; font-weight: 900; margin-bottom: 0.75rem; }
+  .hero p { font-size: 1rem; opacity: 0.85; max-width: 480px; margin: 0 auto 2rem; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: white; color: var(--blue-primary);
+    border: none; padding: 12px 28px; border-radius: 8px;
+    font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.12); color: white;
+    border: 1.5px solid rgba(255,255,255,0.4); padding: 12px 28px; border-radius: 8px;
+    font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.22); }
+
+  /* SERVICES SECTION */
+  .section { padding: 2.5rem 2rem; }
+  .section-title { text-align: center; font-size: 1.4rem; font-weight: 700; color: var(--text-dark); margin-bottom: 0.4rem; }
+  .section-sub { text-align: center; font-size: 13px; color: var(--gray-text); margin-bottom: 2rem; }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; max-width: 700px; margin: 0 auto; }
+  .service-card {
+    background: white; border-radius: 14px; padding: 1.5rem 1rem;
+    text-align: center; box-shadow: var(--shadow);
+    transition: all 0.25s; border: 1.5px solid transparent;
+    cursor: pointer;
+  }
+  .service-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--blue-accent); }
+  .service-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    background: var(--blue-bg); display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .service-icon svg { width: 26px; height: 26px; fill: var(--blue-primary); }
+  .service-card h3 { font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+  .service-card p { font-size: 11px; color: var(--gray-text); }
+
+  /* PACKAGES */
+  .packages-section { background: white; padding: 3rem 2rem; }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; max-width: 700px; margin: 0 auto; }
+  .pkg-card {
+    background: white; border: 2px solid var(--blue-bg);
+    border-radius: 18px; padding: 1.8rem 1.2rem;
+    text-align: center; position: relative;
+    transition: all 0.25s; overflow: hidden;
+  }
+  .pkg-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--blue-primary); transform: scaleX(0); transition: transform 0.25s;
+  }
+  .pkg-card:hover { border-color: var(--blue-light); box-shadow: var(--shadow-hover); transform: translateY(-6px); }
+  .pkg-card:hover::before { transform: scaleX(1); }
+  .pkg-card.featured { border-color: var(--blue-primary); box-shadow: var(--shadow-hover); }
+  .pkg-card.featured::before { transform: scaleX(1); }
+  .popular-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--blue-primary); color: white;
+    font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 50px;
+  }
+  .pkg-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+  .pkg-name { font-size: 14px; font-weight: 700; color: var(--gray-text); margin-bottom: 8px; }
+  .pkg-price {
+    font-size: 2.4rem; font-weight: 900; color: var(--blue-primary);
+    line-height: 1; margin-bottom: 4px;
+  }
+  .pkg-price span { font-size: 14px; font-weight: 600; }
+  .pkg-data {
+    background: var(--blue-bg); border-radius: 8px;
+    padding: 8px 16px; margin: 14px 0;
+    font-size: 1.1rem; font-weight: 700; color: var(--blue-dark);
+  }
+  .pkg-data small { display: block; font-size: 11px; font-weight: 400; color: var(--gray-text); }
+  .pkg-features { list-style: none; margin-bottom: 1.2rem; }
+  .pkg-features li { font-size: 12px; color: var(--gray-text); padding: 3px 0; }
+  .pkg-features li::before { content: '✓ '; color: var(--blue-primary); font-weight: 700; }
+  .buy-btn {
+    width: 100%; padding: 11px;
+    background: var(--blue-primary); color: white; border: none;
+    border-radius: 9px; font-family: 'Cairo', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  }
+  .buy-btn:hover { background: var(--blue-dark); transform: scale(1.02); }
+
+  /* LOGIN */
+  .login-section {
+    background: white; padding: 3rem 2rem;
+    min-height: 60vh; display: flex; align-items: center; justify-content: center;
+  }
+  .login-card {
+    background: white; border-radius: 20px; padding: 2.5rem 2rem;
+    box-shadow: var(--shadow-hover); max-width: 400px; width: 100%;
+    border: 1px solid var(--blue-bg); text-align: center;
+  }
+  .login-logo {
+    width: 70px; height: 70px; border-radius: 18px;
+    background: var(--blue-bg); display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem;
+  }
+  .login-logo svg { width: 36px; height: 36px; fill: var(--blue-primary); }
+  .login-card h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
+  .login-card p { font-size: 13px; color: var(--gray-text); margin-bottom: 1.8rem; }
+  .form-group { margin-bottom: 1rem; text-align: right; }
+  .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
+  .form-group input {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--blue-bg);
+    border-radius: 10px; font-family: 'Cairo', sans-serif; font-size: 14px;
+    transition: border-color 0.2s; outline: none; direction: ltr; text-align: center;
+    letter-spacing: 2px;
+  }
+  .form-group input:focus { border-color: var(--blue-primary); }
+  .login-btn {
+    width: 100%; padding: 14px; background: var(--blue-primary);
+    color: white; border: none; border-radius: 10px;
+    font-family: 'Cairo', sans-serif; font-size: 15px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
+  }
+  .login-btn:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(21,101,192,0.3); }
+
+  /* SALES POINTS */
+  .points-section { padding: 2.5rem 2rem; }
+  .search-bar {
+    display: flex; gap: 10px; max-width: 500px; margin: 0 auto 2rem;
+  }
+  .search-bar input {
+    flex: 1; padding: 11px 16px; border: 1.5px solid var(--blue-bg);
+    border-radius: 10px; font-family: 'Cairo', sans-serif; font-size: 14px; outline: none;
+  }
+  .search-bar input:focus { border-color: var(--blue-primary); }
+  .points-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 700px; margin: 0 auto; }
+  .point-card {
+    background: white; border-radius: 14px; padding: 1.4rem;
+    box-shadow: var(--shadow); border: 1.5px solid transparent;
+    transition: all 0.25s; cursor: pointer;
+  }
+  .point-card:hover { border-color: var(--blue-accent); transform: translateY(-3px); }
+  .point-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .point-avatar {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--blue-bg); display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .point-info h3 { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+  .point-info p { font-size: 11px; color: var(--gray-text); }
+  .point-badge { display: inline-flex; align-items: center; gap: 4px; background: #E8F5E9; color: #2E7D32; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+  .point-badge::before { content: '●'; font-size: 8px; }
+
+  /* CONTACT */
+  .contact-section { padding: 2.5rem 2rem; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 700px; margin: 0 auto 2rem; }
+  @media (max-width: 520px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-card {
+    background: white; border-radius: 14px; padding: 1.5rem;
+    text-align: center; box-shadow: var(--shadow);
+    transition: all 0.25s; cursor: pointer; text-decoration: none;
+  }
+  .contact-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+  .contact-icon { font-size: 2rem; margin-bottom: 10px; }
+  .contact-card h3 { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+  .contact-card p { font-size: 13px; color: var(--blue-primary); font-weight: 600; }
+  .contact-form-card { background: white; border-radius: 16px; padding: 2rem; box-shadow: var(--shadow); max-width: 700px; margin: 0 auto; }
+  .contact-form-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 1.2rem; }
+  .contact-form-card textarea {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--blue-bg);
+    border-radius: 10px; font-family: 'Cairo', sans-serif; font-size: 14px;
+    resize: vertical; min-height: 100px; outline: none; margin-bottom: 10px;
+  }
+  .contact-form-card textarea:focus { border-color: var(--blue-primary); }
+  .send-btn {
+    width: 100%; padding: 13px; background: var(--blue-primary);
+    color: white; border: none; border-radius: 10px;
+    font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .send-btn:hover { background: var(--blue-dark); }
+
+  /* FOOTER */
+  footer {
+    background: var(--blue-dark); color: rgba(255,255,255,0.7);
+    text-align: center; padding: 1.4rem 1rem;
+    font-size: 12px; line-height: 1.8;
+  }
+  footer strong { color: white; }
+  footer a { color: var(--blue-accent); text-decoration: none; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--blue-dark); color: white; padding: 12px 24px;
+    border-radius: 50px; font-size: 13px; font-weight: 600;
+    transition: transform 0.3s; z-index: 999; pointer-events: none;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+    </div>
+    <div class="nav-brand">شبكة العزبة<span>حضرموت</span></div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home', this)">الرئيسية</button>
+    <button class="nav-link" onclick="showPage('points', this)">نقاط البيع</button>
+    <button class="nav-link" onclick="showPage('contact', this)">تواصل معنا</button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10"/></svg>
+      خدمات إنترنت موثوقة وسريعة
+    </div>
+    <h1>شبكة العزبة<br>حضرموت</h1>
+    <p>نوفر لك أفضل باقات الإنترنت بأسعار مناسبة وخدمة عالية الجودة في جميع أنحاء المنطقة</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('home', null); document.querySelector('.packages-section').scrollIntoView({behavior:'smooth'})">استعرض الباقات</button>
+      <button class="btn-secondary" onclick="showPage('contact', document.querySelectorAll('.nav-link')[2])">تواصل معنا</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">خدماتنا</div>
+    <div class="section-sub">كل ما تحتاجه في مكان واحد</div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/></svg>
+        </div>
+        <h3>شحن الكروت</h3>
+        <p>شحن سريع وآمن</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3a4.237 4.237 0 00-6 0zm-4-4l2 2a7.074 7.074 0 0110 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+        </div>
+        <h3>باقات الإنترنت</h3>
+        <p>باقات متنوعة بأسعار مميزة</p>
+      </div>
+      <div class="service-card" onclick="showPage('points', document.querySelectorAll('.nav-link')[1])">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        </div>
+        <h3>نقاط البيع</h3>
+        <p>أقرب نقطة إليك</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2H3v2a9 9 0 0 0 8 8.94V23h2v-2.06A9 9 0 0 0 21 12v-2h-2z"/></svg>
+        </div>
+        <h3>الدعم الفني</h3>
+        <p>مساعدة على مدار الساعة</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKAGES -->
+  <div class="packages-section">
+    <div class="section-title">باقات الكروت</div>
+    <div class="section-sub">اختر الباقة المناسبة لاحتياجاتك</div>
+    <div class="cards-grid">
+      <!-- Card 2000 -->
+      <div class="pkg-card featured">
+        <div class="popular-badge">الأكثر طلباً</div>
+        <div class="pkg-icon">🌐</div>
+        <div class="pkg-name">كرت أبو 2000</div>
+        <div class="pkg-price">2000 <span>ريال</span></div>
+        <div class="pkg-data">17 GB<small>بيانات إنترنت</small></div>
+        <ul class="pkg-features">
+          <li>سرعة فائقة</li>
+          <li>صلاحية ممتدة</li>
+          <li>متعدد الأجهزة</li>
+        </ul>
+        <button class="buy-btn" onclick="showToast('تم إضافة كرت 2000 🎉')">شراء الآن</button>
+      </div>
+      <!-- Card 1000 -->
+      <div class="pkg-card">
+        <div class="pkg-icon">📶</div>
+        <div class="pkg-name">كرت أبو 1000</div>
+        <div class="pkg-price">1000 <span>ريال</span></div>
+        <div class="pkg-data">7 GB<small>بيانات إنترنت</small></div>
+        <ul class="pkg-features">
+          <li>سرعة جيدة</li>
+          <li>مناسب للاستخدام اليومي</li>
+          <li>سهل الاستخدام</li>
+        </ul>
+        <button class="buy-btn" onclick="showToast('تم إضافة كرت 1000 🎉')">شراء الآن</button>
+      </div>
+      <!-- Card 500 -->
+      <div class="pkg-card">
+        <div class="pkg-icon">⚡</div>
+        <div class="pkg-name">كرت أبو 500</div>
+        <div class="pkg-price">500 <span>ريال</span></div>
+        <div class="pkg-data">3 GB<small>بيانات إنترنت</small></div>
+        <ul class="pkg-features">
+          <li>اقتصادي ومناسب</li>
+          <li>للاستخدام الأساسي</li>
+          <li>سهل التعبئة</li>
+        </ul>
+        <button class="buy-btn" onclick="showToast('تم إضافة كرت 500 🎉')">شراء الآن</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="login-section">
+    <div class="login-card">
+      <div class="login-logo">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+      </div>
+      <h2>تسجيل الدخول</h2>
+      <p>أدخل رقم الكرت للوصول إلى حسابك</p>
+      <div class="form-group">
+        <label>رقم الكرت</label>
+        <input type="text" placeholder="XXXX-XXXX-XXXX" maxlength="19" id="card-input" oninput="formatCard(this)">
+      </div>
+      <button class="login-btn" onclick="handleLogin()">تسجيل الدخول</button>
+    </div>
+  </div>
+</div>
+
+<!-- POINTS PAGE -->
+<div id="page-points" class="page">
+  <div class="points-section">
+    <div class="section-title">نقاط البيع</div>
+    <div class="section-sub">ابحث عن أقرب نقطة بيع إليك</div>
+    <div class="search-bar">
+      <input type="text" placeholder="ابحث عن نقطة بيع..." id="search-input" oninput="filterPoints(this.value)">
+    </div>
+    <div class="points-grid" id="points-grid">
+      <div class="point-card" data-name="بقالة بغداد">
+        <div class="point-header">
+          <div class="point-avatar">🏪</div>
+          <div class="point-info">
+            <h3>بقالة بغداد</h3>
+            <p>نقطة بيع معتمدة</p>
+          </div>
+        </div>
+        <div class="point-badge">متاح الآن</div>
+      </div>
+      <div class="point-card" data-name="بقالة الحرمين">
+        <div class="point-header">
+          <div class="point-avatar">🏬</div>
+          <div class="point-info">
+            <h3>بقالة الحرمين</h3>
+            <p>نقطة بيع معتمدة</p>
+          </div>
+        </div>
+        <div class="point-badge">متاح الآن</div>
+      </div>
+      <div class="point-card" data-name="باوهال">
+        <div class="point-header">
+          <div class="point-avatar">🏢</div>
+          <div class="point-info">
+            <h3>باوهال</h3>
+            <p>نقطة بيع معتمدة</p>
+          </div>
+        </div>
+        <div class="point-badge">متاح الآن</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT PAGE -->
+<div id="page-contact" class="page">
+  <div class="contact-section">
+    <div class="section-title">تواصل معنا</div>
+    <div class="section-sub">نحن هنا لمساعدتك في أي وقت</div>
+    <div class="contact-grid">
+      <a class="contact-card" href="tel:777523369">
+        <div class="contact-icon">📞</div>
+        <h3>اتصل بنا</h3>
+        <p>777523369</p>
+      </a>
+      <a class="contact-card" href="https://wa.me/777523369">
+        <div class="contact-icon">💬</div>
+        <h3>واتساب</h3>
+        <p>777523369</p>
+      </a>
+    </div>
+    <div class="contact-form-card">
+      <h3>أرسل لنا رسالة</h3>
+      <div class="form-group">
+        <label>الاسم</label>
+        <input type="text" placeholder="اسمك الكريم" style="width:100%;padding:11px 14px;border:1.5px solid var(--blue-bg);border-radius:10px;font-family:'Cairo',sans-serif;font-size:14px;outline:none;margin-bottom:10px;">
+      </div>
+      <textarea placeholder="اكتب رسالتك هنا..."></textarea>
+      <button class="send-btn" onclick="showToast('تم إرسال رسالتك بنجاح ✓')">إرسال الرسالة</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div>برمجة وتطوير <strong>حسن الكثيري</strong></div>
+  <div>© 2025 شبكة العزبة - حضرموت · جميع الحقوق محفوظة</div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function formatCard(input) {
+  let val = input.value.replace(/\D/g, '').substring(0, 16);
+  input.value = val.replace(/(.{4})/g, '$1-').replace(/-$/, '');
+}
+
+function handleLogin() {
+  const val = document.getElementById('card-input').value.replace(/-/g, '');
+  if (val.length < 8) { showToast('الرجاء إدخال رقم كرت صحيح'); return; }
+  showToast('جاري التحقق من الكرت...');
+}
+
+function filterPoints(q) {
+  const cards = document.querySelectorAll('.point-card');
+  cards.forEach(c => {
+    const name = c.dataset.name || '';
+    c.style.display = name.includes(q) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
